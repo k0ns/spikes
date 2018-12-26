@@ -14,7 +14,7 @@
 close all
 minE = zeros(4,1);
 range = 30;
-for i = 3:3
+for i = 1:1
 	name = ['Data/Data_Eval_E_' num2str(i)];
 	load(name)
     sequenceOfNum = 1:1:length(data);   
@@ -25,26 +25,28 @@ for i = 3:3
     T = bestK*std_n;
     Nspikes = nnz( diff(sequenceOfNum( diff(abs(data)>T) == 1)) > range  );   
     %Diafora apo ton pragmatiko ari8mo twn spikes
-	minE(i) = abs( Nspikes-length(spikeTimes));
+	ArxikhDiafora(i) = abs( Nspikes-length(spikeTimes));
     %8a vroume tis xronikes 8eseis twn spikes
-    sequenceOfNum = 1:1:length(data);
     spTimes = sequenceOfNum( diff(abs(data)>T) == 1);
     spikeTimesEst = spTimes(diff(spTimes) > range);
-    spikeMaxTimes = spikeTimesEst;
-    %Briskoume thn xronikh stigmh pou exoume to megisto tou Spike
+    %Briskoume thn xronikh stigmh tou prwtou akrotatou
         lengthSpike = 40;
-        for r = 1:length(spikeMaxTimes)
-          [~ , I] = max(abs(data((spikeMaxTimes(r)-lengthSpike):(spikeMaxTimes(r)+lengthSpike))));
-          I = I - lengthSpike - 1;
-          spikeMaxTimes(r) = spikeMaxTimes(r) + I;          
+        spikeFirstPeakTimes = spikeTimesEst;
+        for r = 1:length(spikeFirstPeakTimes)
+          [~ , Imax] = max(data((spikeFirstPeakTimes(r)-lengthSpike):(spikeFirstPeakTimes(r)+lengthSpike)));
+          [~ , Imin] = min(data((spikeFirstPeakTimes(r)-lengthSpike):(spikeFirstPeakTimes(r)+lengthSpike)));
+          %Pernoume to prwto apo ta duo akrotata
+          I = min(Imax,Imin) - lengthSpike - 1;
+          spikeFirstPeakTimes(r) = spikeFirstPeakTimes(r) + I;          
         end
-    position(i).spikeTimes = spikeMaxTimes;
+    position(i).spikeTimes = spikeFirstPeakTimes;
     %Apo8hkeuoume ta stigmiotupa twn kumatomofwn evrous '2*lengthSpike+1'
-    %se enan pinaka "spikeEst" ths domhs 'position',ena pinaka gia ka8e arxeio
-    position(i).spikeEst = zeros(2*lengthSpike+1,length(spikeMaxTimes));
-    for j = 1:length(spikeMaxTimes)
-    position(i).spikeEst(:,j) = data((spikeMaxTimes(j)-lengthSpike):(spikeMaxTimes(j)+lengthSpike));
+    %se enan pinaka ths domhs 'position',ena pinaka gia ka8e arxeio
+    position(i).spikeEst = zeros(2*lengthSpike+1,length(spikeFirstPeakTimes));
+    for j = 1:length(spikeFirstPeakTimes)
+    position(i).spikeEst(:,j) = data((spikeFirstPeakTimes(j)-lengthSpike):(spikeFirstPeakTimes(j)+lengthSpike));
     end
+%
     %
 %% Ypologismos twn realSpikes kai noiseSpikes
 	%A)
