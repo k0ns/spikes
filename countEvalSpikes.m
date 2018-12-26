@@ -49,23 +49,20 @@ for i = 1:1
 %
     %
 %% Ypologismos twn realSpikes kai noiseSpikes
-	%A)
-    max_spikeTimes = spikeTimes;
-    %Xronikh stigmh pou exoume to megisto tou Spike gia ta dosmena Spikes
-    lengthSpike = 30;
-    for r = 1:length(max_spikeTimes)
-      [~ , I] = max(abs(data(max_spikeTimes(r):(max_spikeTimes(r)+lengthSpike))));
-      I = I - 1;
-      max_spikeTimes(r) = max_spikeTimes(r) + I;          
+    spikeTimesFirstPeak = spikeTimes;
+    %Xronikh stigmh pou exoume to prwto akrotato gia ta dosmena Spikes pou dinontai
+    lengthSpike = 60;
+    for r = 1:length(spikeTimesFirstPeak)
+      [~ , Imax] = max(data(spikeTimesFirstPeak(r):(spikeTimesFirstPeak(r)+lengthSpike)));
+      [~ , Imin] = min(data(spikeTimesFirstPeak(r):(spikeTimesFirstPeak(r)+lengthSpike)));
+      %Pernoume to prwto apo ta duo akrotata
+      I = min(Imax,Imin) - 1;
+      spikeTimesFirstPeak(r) = spikeTimesFirstPeak(r) + I;           
     end
-	%B)
-    in_A_Range_Of = 40;
+   %-----------
     noisePointsIndex = [];
-    noisePoints = 0;
-    sequenceOfNum = 1:1:length(position(i).spikeTimes);
     for r = 1:length(position(i).spikeTimes)
-        if nnz((abs(spikeTimes - position(i).spikeTimes(r))) < in_A_Range_Of) == 0
-        noisePoints = noisePoints + 1;
+        if nnz((spikeTimesFirstPeak == position(i).spikeTimes(r))) == 0
         noisePointsIndex = [noisePointsIndex r];
         end
     end
@@ -73,14 +70,14 @@ for i = 1:1
     RealSpikesTimes = position(i).spikeTimes;
     RealSpikesTimes(noisePointsIndex) = [];
     
-    noisePoints
-    %{
-	%8orubos
+    nuOfnoisePoints(i) = length(noisePointTimes);
+    %
+    %Noise Spikes
     figure(3)
     for g = 1:length(noisePointTimes)
-    plot( (data(noisePointTimes(g)-20:noisePointTimes(g)+20)))
+    plot( (data(noisePointTimes(g)-32:noisePointTimes(g)+32)))
     hold on 
-    plot(21,data(noisePointTimes(g)),'r*')
+    plot(33,data(noisePointTimes(g)),'r*')
     name = ['Spike' num2str(g)];
     title(name);
     pause(0.0001);
@@ -88,13 +85,13 @@ for i = 1:1
     end
     %}
     
-    %{
+    %
     %Pragmatika Spikes
-    figure(3)
+    figure(4)
     for g = 1:length(RealSpikesTimes)
-    plot( (data(RealSpikesTimes(g)-20:RealSpikesTimes(g)+20)))
+    plot( (data(RealSpikesTimes(g)-32:RealSpikesTimes(g)+32)))
     hold on 
-    plot(21,data(RealSpikesTimes(g)),'r*')
+    plot(33,data(RealSpikesTimes(g)),'r*')
     name = ['Spike' num2str(g)];
     title(name);
     pause(0.0001);
@@ -103,8 +100,12 @@ for i = 1:1
     %}
     
 end
-%Diafora apotelesmatwn
-minE
+%Arxikh Diafora apotelesmatwn
+ArxikhDiafora
+%Meta thn eka8arhsh twn noise point
+TelikhDiafora = ArxikhDiafora + nuOfnoisePoints
+%Pososto epituxias
+success = (TelikhDiafora./numOfSpikes).*100
 
 %{
 %Plot twn spikes pou dinei h ekfwnhsh me to dianusma spikeTimes
