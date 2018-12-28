@@ -7,27 +7,33 @@ for i = 1:4
     name = ['Data/Data_Eval_E_' num2str(i)];
 	load(name)
     numOfSpikes(i) = length(spikeTimes);    
-    givenSpikesFirstPeak = spikeTimes;
+    givenSpikesFirstPeakTimes = spikeTimes;
     %Xronikh stigmh pou exoume to prwto akrotato gia ta Spikes pou dinontai
-    lengthSpike = 64;
-    for r = 1:length(givenSpikesFirstPeak)
-      [~ , Imax] = max(data(givenSpikesFirstPeak(r):(givenSpikesFirstPeak(r)+lengthSpike)));
-      [~ , Imin] = min(data(givenSpikesFirstPeak(r):(givenSpikesFirstPeak(r)+lengthSpike)));
+    stepForward = 58;
+    for r = 1:length(givenSpikesFirstPeakTimes)
+      [~ , Imax] = max(data(givenSpikesFirstPeakTimes(r):(givenSpikesFirstPeakTimes(r)+stepForward)));
+      [~ , Imin] = min(data(givenSpikesFirstPeakTimes(r):(givenSpikesFirstPeakTimes(r)+stepForward)));
       %Pernoume to prwto apo ta duo akrotata
       I = min(Imax,Imin) - 1;
-      givenSpikesFirstPeak(r) = givenSpikesFirstPeak(r) + I;           
+      givenSpikesFirstPeakTimes(r) = givenSpikesFirstPeakTimes(r) + I;           
     end
     %Ta dosmena Spikes ka8os kai auta pou exoun vre8ei apo ton kanona exoun
     %antistoixh8ei ws pros to prwto akrota tous,opote sthn sunexeia kanoume
     %ena pros ena antistoixhsei gia na vroume poia einai pragmatika Spikes 
     noisePointsIndex = [];
-    for r = 1:length(position(i).spikeFirstPeakTimes)
-        if nnz((givenSpikesFirstPeak == position(i).spikeFirstPeakTimes(r))) == 0
-        noisePointsIndex = [noisePointsIndex r];
+    sequenceOfNum = 1:1:size(spikeClass,2);
+    savedData(i).classEst = zeros(size(savedData(i).spikeTimesEst,2),1);
+    for r = 1:size(savedData(i).spikeFirstPeakTimes,2)
+        tempBoolean = givenSpikesFirstPeakTimes == savedData(i).spikeFirstPeakTimes(r);
+        if nnz(tempBoolean) == 0
+            noisePointsIndex = [noisePointsIndex r];
+        else
+            [~,index] = max(tempBoolean);
+            savedData(i).classEst(r) = spikeClass(sequenceOfNum(index));
         end
     end
-    noisePointTimes = position(i).spikeFirstPeakTimes(noisePointsIndex);
-    RealSpikesTimes = position(i).spikeFirstPeakTimes;
+    noisePointTimes = savedData(i).spikeFirstPeakTimes(noisePointsIndex);
+    RealSpikesTimes = savedData(i).spikeFirstPeakTimes;
     RealSpikesTimes(noisePointsIndex) = [];
     numOfnoisePoints(i) = length(noisePointTimes);
   
@@ -66,4 +72,3 @@ ArxikhDiafora
 TelikhDiafora = ArxikhDiafora + numOfnoisePoints
 %Pososto epituxias
 success = 100 - (TelikhDiafora./numOfSpikes).*100
-

@@ -21,7 +21,7 @@ for i = 1:4
     spikeTimesEst = sequenceOfNum( diff(abs(data)>T) == 1);
     spikeTimesEst = spikeTimesEst(diff(spikeTimesEst) > range);
     %Apo8hkeuoume tis xronikes stigmes se mia domh 
-    position(i).spikeTimesEst = spikeTimesEst;
+    savedData(i).spikeTimesEst = spikeTimesEst;
  
 %-----Erwthma 2.2-----
     %Briskoume thn xronikh stigmh tou prwtou akrotatou
@@ -37,11 +37,11 @@ for i = 1:4
             end
         end
     %Apo8hkeuoume tis xronikes stigmes se mia domh gia to plot argotera 
-    position(i).spikeFirstPeakTimes = spikeFirstPeakTimes;
-    %Apo8hkeuoume ta stigmiotupa twn kumatomofwn evrous '2*lengthSpike+1'
-    position(i).spikeEst = zeros(2*lengthSpike+1,length(spikeFirstPeakTimes));
+    savedData(i).spikeFirstPeakTimes = spikeFirstPeakTimes;
+    %Apo8hkeuoume ta stigmiotupa twn kumatomofwn evrous '3*lengthSpike+1'
+    savedData(i).spikeEst = zeros(4*lengthSpike+1,length(spikeFirstPeakTimes));
     for j = 1:length(spikeFirstPeakTimes)
-    position(i).spikeEst(:,j) = data((spikeFirstPeakTimes(j)-lengthSpike):(spikeFirstPeakTimes(j)+lengthSpike));
+    savedData(i).spikeEst(:,j) = data((spikeFirstPeakTimes(j)-2*lengthSpike):(spikeFirstPeakTimes(j)+2*lengthSpike));
     end
  %-----------------------------------------
 
@@ -64,11 +64,11 @@ end
 %{
 Plot twn spikes pou vrikame apo ton kanona
 figure(2)
-for g = 1:length(position(i).spikeTimes)
+for g = 1:length(savedData(i).spikeTimes)
 d = 40;    
-plot((data(position(i).spikeTimes(g)-d+16:position(i).spikeTimes(g)+d+4)))
+plot((data(savedData(i).spikeTimes(g)-d+16:savedData(i).spikeTimes(g)+d+4)))
 hold on 
-plot(d-15,data(position(i).spikeTimes(g)),'r*')
+plot(d-15,data(savedData(i).spikeTimes(g)),'r*')
 name = ['Spike' num2str(g)];
 title(name);
 pause(0.000000001);
@@ -79,10 +79,10 @@ end
 %{
 Plot twn spikes pou vrikame apo ton kanona
 figure(3)
-for g = 1:length(position(i).spikeEst)
-plot( position(i).spikeEst(:,g))
+for g = 1:length(savedData(i).spikeEst)
+plot( savedData(i).spikeEst(:,g))
 hold on 
-plot(lengthSpike+1,position(i).spikeEst(lengthSpike+1,g),'r*')
+plot(lengthSpike+1,savedData(i).spikeEst(lengthSpike+1,g),'r*')
 name = ['Spike' num2str(g)];
 title(name);
 %pause(1);

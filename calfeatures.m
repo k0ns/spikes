@@ -65,8 +65,8 @@ end
 %{P
 figure(1)
 color = savedData(i).classEst;
-%gscatter(savedData(i).features(:,1), savedData(i).features(:,4), color);
-gscatter(savedData(i).features(:,1), savedData(i).features(:,7),color,'rkgb','o*',8,'on');
+gscatter(savedData(i).features(:,1), savedData(i).features(:,7),color,'kgrb','o*',8,'on');
+legend({'Noise', 'Class1','Class2', 'Class3'});
 %}
 
   %{Plot twn spikes pou vrikame apo ton kanona
