@@ -7,29 +7,17 @@ for i = 1:4
     name = ['Data/Data_Eval_E_' num2str(i)];
 	load(name)
     numOfSpikes(i) = length(spikeTimes);    
-    givenSpikesFirstPeakTimes = spikeTimes;
-    %Xronikh stigmh pou exoume to prwto akrotato gia ta Spikes pou dinontai
-    stepForward = 58;
-    for r = 1:length(givenSpikesFirstPeakTimes)
-      [~ , Imax] = max(data(givenSpikesFirstPeakTimes(r):(givenSpikesFirstPeakTimes(r)+stepForward)));
-      [~ , Imin] = min(data(givenSpikesFirstPeakTimes(r):(givenSpikesFirstPeakTimes(r)+stepForward)));
-      %Pernoume to prwto apo ta duo akrotata
-      I = min(Imax,Imin) - 1;
-      givenSpikesFirstPeakTimes(r) = givenSpikesFirstPeakTimes(r) + I;           
-    end
-    %Ta dosmena Spikes ka8os kai auta pou exoun vre8ei apo ton kanona exoun
-    %antistoixh8ei ws pros to prwto akrota tous,opote sthn sunexeia kanoume
-    %ena pros ena antistoixhsei gia na vroume poia einai pragmatika Spikes 
+    maxRange = 26;
     noisePointsIndex = [];
-    sequenceOfNum = 1:1:size(spikeClass,2);
     savedData(i).classEst = zeros(size(savedData(i).spikeTimesEst,2),1);
     for r = 1:size(savedData(i).spikeFirstPeakTimes,2)
-        tempBoolean = givenSpikesFirstPeakTimes == savedData(i).spikeFirstPeakTimes(r);
-        if nnz(tempBoolean) == 0
+        minDictance = savedData(i).spikeFirstPeakTimes(r) - spikeTimes;
+        minDictance(minDictance < 0) = maxRange + 1000; %aporiptoume arnhtikes times
+        [minDictance ,index] = min(minDictance);
+        if minDictance > maxRange 
             noisePointsIndex = [noisePointsIndex r];
         else
-            [~,index] = max(tempBoolean);
-            savedData(i).classEst(r) = spikeClass(sequenceOfNum(index));
+            savedData(i).classEst(r) = spikeClass(index);
         end
     end
     noisePointTimes = savedData(i).spikeFirstPeakTimes(noisePointsIndex);
@@ -37,8 +25,8 @@ for i = 1:4
     RealSpikesTimes(noisePointsIndex) = [];
     numOfnoisePoints(i) = length(noisePointTimes);
   
-    %{
-    Noise Spikes
+    %{    
+    %Noise Spikes
     figure(1)
     for g = 1:length(noisePointTimes)
     plot( (data(noisePointTimes(g)-32:noisePointTimes(g)+32)))
