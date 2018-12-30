@@ -1,16 +1,15 @@
 close all
-numOfnoisePoints = zeros(4,1);
+numOfNoiseSpikes = zeros(4,1);
 numOfrealSpikes = zeros(4,1);
 numOfGivenSpikes = zeros(4,1);
 %% Ypologismos twn realSpikes kai noiseSpikes
 %-----Erwthma 2.3-----
 for i = 1:4
-    name = ['Data_Eval_E_' num2str(i)];
+    name = ['Data/Data_Eval_E_' num2str(i)];
 	load(name)
     numOfGivenSpikes(i) = length(spikeTimes);    
-    maxRange = 40;
-    sm = 0;
-    noisePointsIndex = [];
+    maxRange = 30;
+    sm = 15;    noisePointsIndex = [];
     savedData(i).classEst = zeros(size(savedData(i).spikeTimesEst,2),1);
     for r = 1:size(savedData(i).spikeFirstPeakTimes,2)
         minDictance = savedData(i).spikeFirstPeakTimes(r) - spikeTimes;
@@ -21,7 +20,7 @@ for i = 1:4
         else
             savedData(i).classEst(r) = spikeClass(index);
             
-            %{ 
+            %{
 %Pragmatika Spikes
             figure(3)
             g = index;
@@ -50,10 +49,10 @@ for i = 1:4
     noisePointTimes = savedData(i).spikeFirstPeakTimes(noisePointsIndex);
     RealSpikesTimes = savedData(i).spikeFirstPeakTimes;
     RealSpikesTimes(noisePointsIndex) = [];
-    numOfnoisePoints(i) = length(noisePointTimes);
+    numOfNoiseSpikes(i) = length(noisePointTimes);
     numOfrealSpikes(i) = length(RealSpikesTimes);
     %{
- %Noise Spikes
+%Noise Spikes
     figure(1)
     for g = 1:length(noisePointTimes)
     plot( (data(noisePointTimes(g)-32:noisePointTimes(g)+70)))
@@ -61,7 +60,7 @@ for i = 1:4
     plot(33,data(noisePointTimes(g)),'r*')
     name = ['Spike' num2str(g)];
     title(name);
-    pause(0.0001);
+    pause(0.2);
     %hold off
     end
     %}
@@ -86,10 +85,14 @@ end
 %Arxikh Diafora apotelesmatwn
 ArxikhDiafora
 %Meta thn eka8arhsh twn noise point
-TelikhDiafora = abs(numOfGivenSpikes - numOfrealSpikes)
+TelikhDiafora = numOfrealSpikes - numOfGivenSpikes
 
 %Pososto epituxia arxika
-successBegin = 100 - (ArxikhDiafora./numOfGivenSpikes).*100
+successBegin = 100 - (abs(ArxikhDiafora)./numOfGivenSpikes).*100
 
 %Pososto epituxias telika
-successEnd = 100 - (TelikhDiafora./numOfGivenSpikes).*100
+successEnd = 100 - (abs(TelikhDiafora)./numOfGivenSpikes).*100
+
+%Pososto 8oruvou sta deigmata
+Noise = ((numOfNoiseSpikes)./(numOfrealSpikes+numOfNoiseSpikes)).*100
+

@@ -33,20 +33,20 @@ for i = 1:1
         end
         secondZero = firstPeakPosition;
         signOfPeak = sign(savedData(i).spikeEst(firstPeakPosition,r));
-        while( sign(savedData(i).spikeEst(secondZero,r)) == signOfPeak  && secondZero < 4*lengthSpike+1 )
+        while( sign(savedData(i).spikeEst(secondZero,r)) == signOfPeak  && secondZero < 4*lengthSpike-1 )
             secondZero = secondZero + 1 ;
         end
         %To trito mhdeniko einai ekei pou exoume allagei tou proshmmou ths
         %paragwgou duo fores se sxesh me thn arxikh timh tou proshmou enos 
         %shmeiou meta apo to shmeio tou prwtou akrotatou
         thirdZero = secondZero + 1;
-        while( sign(deriv(thirdZero)) == -signOfPeakDer  && thirdZero < 4*lengthSpike+1)
+        while( sign(deriv(thirdZero)) == -signOfPeakDer  && thirdZero < 4*lengthSpike-1)
         thirdZero = thirdZero + 1 ;
         end
         %Deytero Akrotato
         feature8(r) = thirdZero;
-        %Max timh tou spike
-        if(feature9(r) < 0), feature9(r) = thirdZero; else feature9(r) = firstPeakPosition; end
+        %8esh ths Max timhs tou spike
+        if(savedData(i).classEst(r) == 3), feature9(r) = firstPeakPosition; else feature9(r) = thirdZero; end
         %Trito Mhdeniko
         while( sign(deriv(thirdZero)) == signOfPeakDer  && thirdZero < 4*lengthSpike)
         thirdZero = thirdZero + 1 ;
@@ -72,11 +72,12 @@ end
 %{P
 figure(1)
 color = savedData(i).classEst;
-gscatter(savedData(i).features(:,1), savedData(i).features(:,9),color,'kgrb','o*',8,'on');
+gscatter(savedData(i).features(:,1), savedData(i).features(:,9),color,'kgrb','o*',5,'on');
 legend({'Noise', 'Class1','Class2', 'Class3'});
 %}
 
-  %{Plot twn spikes feature7
+  %{
+Plot twn spikes feature7
 figure(2)
 for g = 1:130
 plot( savedData(i).spikeEst(:,g))
@@ -95,7 +96,8 @@ legend('Kumatomorfes','firstZero','secondZero','ThirdZero','Endiamesa se 2,3 Zer
 %}
 
 
- %{Plot twn spikes me feature8
+ %{
+Plot twn spikes me feature8
 figure(3)
 for g = 1:130
 plot( savedData(i).spikeEst(:,g))
@@ -110,7 +112,8 @@ end
 legend('Kumatomorfes','PrwtoAkrotato','DeuteroAkrotato')
 %}
 
-%{Plot twn spikes me feature9
+%{
+Plot twn spikes me feature9
 figure(4)
 for g = 1:130
 plot( savedData(i).spikeEst(:,g))

@@ -6,10 +6,9 @@ bestKPosition = zeros(8,1);
 bestKapa =  zeros(8,1);
 sigma =  zeros(8,1);
 best_T =  zeros(8,1);
-nValues = 100; 
+nValues = 200; 
 min_k = 2;
-max_k = 5;
-range = 30; %Aixmes pou  einai konta anoikoun sto idio spike  
+max_k = 4;
 for i = 1:8
 	name = ['Data/Data_Test_' num2str(i)];
 	load(name)
@@ -21,8 +20,8 @@ for i = 1:8
     j = 1;
 	for k = min_k:stepK:max_k
     	T = k*std_n;  
-        %Ta 8etika spikes kai arnhtika spikes pou omws apexoun apostash 'range'
-    	Nspikes(j) = nnz( diff(sequenceOfTimes( diff(abs(data)>T) == 1)) > range  );
+        %Ta 8etika spikes
+    	Nspikes(j) = nnz( diff(data>T) == 1);
         j = j+1;
 	end
     
