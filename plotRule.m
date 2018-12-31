@@ -5,7 +5,7 @@ hold on
 sig = 0.05:0.01:0.45;
 x = sig;
 %Kanonas
-plot(sig,(3.947678 - 22.80764*x + 243.3986*x.^2 - 1093.89*x.^3 + 2097.516*x.^4 - 1438.689*x.^5))
+plot(sig,(2.973 + 26.08*x + -332.6*x.^2 + 1556*x.^3 + -3289*x.^4 + 2624*x.^5))
 ylabel('k')
 xlabel('sigma')
-title('The Rule is a fourth order polynomial')
+title('The Rule is a fifth order polynomial')

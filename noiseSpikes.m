@@ -9,7 +9,8 @@ for i = 1:4
 	load(name)
     numOfGivenSpikes(i) = length(spikeTimes);    
     maxRange = 30;
-    sm = 15;    noisePointsIndex = [];
+    sm = 14;    
+    noisePointsIndex = [];
     savedData(i).classEst = zeros(size(savedData(i).spikeTimesEst,2),1);
     for r = 1:size(savedData(i).spikeFirstPeakTimes,2)
         minDictance = savedData(i).spikeFirstPeakTimes(r) - spikeTimes;
@@ -19,31 +20,6 @@ for i = 1:4
             noisePointsIndex = [noisePointsIndex r];
         else
             savedData(i).classEst(r) = spikeClass(index);
-            
-            %{
-%Pragmatika Spikes
-            figure(3)
-            g = index;
-            e = 83;
-            m = savedData(i).spikeFirstPeakTimes(r);
-            subplot(1,2,2)
-            plot((data(m-e:m+e)))
-            hold on 
-            plot(e+1,data(m),'r*')
-            hold off
-            subplot(1,2,1)
-            m = spikeTimes(index);
-            subplot(1,2,1)
-            plot((data(m-e:m+e+30)))
-            hold on 
-            plot(e+1,data(m),'r*')
-            hold off
-            pause(1.5)
-            name = ['Spike' num2str(g)];
-            title(name);
-            pause(0.0001);
-            %hold off
-            %}
         end
     end
     noisePointTimes = savedData(i).spikeFirstPeakTimes(noisePointsIndex);
@@ -52,7 +28,7 @@ for i = 1:4
     numOfNoiseSpikes(i) = length(noisePointTimes);
     numOfrealSpikes(i) = length(RealSpikesTimes);
     %{
-%Noise Spikes
+    %Noise Spikes
     figure(1)
     for g = 1:length(noisePointTimes)
     plot( (data(noisePointTimes(g)-32:noisePointTimes(g)+70)))
@@ -60,12 +36,12 @@ for i = 1:4
     plot(33,data(noisePointTimes(g)),'r*')
     name = ['Spike' num2str(g)];
     title(name);
-    pause(0.2);
+    %pause(0.5);
     %hold off
     end
     %}
     
-    %{   
+    %{
  %Pragmatika Spikes
     figure(2)
     for g = 1:length(RealSpikesTimes)
@@ -77,9 +53,7 @@ for i = 1:4
     pause(0.0001);
     %hold off
     end
-    %}
-    
-    
+    %}    
 end
 
 %Arxikh Diafora apotelesmatwn

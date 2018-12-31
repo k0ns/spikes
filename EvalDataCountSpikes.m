@@ -4,7 +4,6 @@ for i = 1:4
 %-----Erwthma 2.1-----
     name = ['Data/Data_Eval_E_' num2str(i)];
 	load(name)
-    numOfSpikes(i) = length(spikeTimes);
     sequenceOfNum = 1:1:length(data);
 	std_n = median(abs(data))/0.6745;   
     x = std_n;
@@ -23,17 +22,15 @@ for i = 1:4
  
 %-----Erwthma 2.2-----
     %Briskoume thn xronikh stigmh tou prwtou akrotatou
-        lengthSpike = 11;
+        lengthSpike = 12;
         spikeFirstPeakTimes = spikeTimesEst;
+        mesosOros = mean(data);
             for r = 1:length(spikeFirstPeakTimes);
               if spikeFirstPeakTimes(r)-lengthSpike > 0 && spikeFirstPeakTimes(r)+lengthSpike <= length(data);
-                  mesosOros = mean(data((spikeFirstPeakTimes(r)-3*lengthSpike):(spikeFirstPeakTimes(r)+3*lengthSpike)));
                   [~ , Imax] = max(data((spikeFirstPeakTimes(r)-lengthSpike):(spikeFirstPeakTimes(r)+lengthSpike)));
-                  [minValue , Imin] = min(data((spikeFirstPeakTimes(r)-lengthSpike):(spikeFirstPeakTimes(r)+lengthSpike)));
-                  if  minValue > -3*abs(mesosOros) 
-                      [~ , Imin] = min(data((spikeFirstPeakTimes(r)-lengthSpike):(spikeFirstPeakTimes(r)+3*lengthSpike)));
-                  end
-                  %Pernoume to prwto apo ta duo akrotata
+                  [~ , Imin] = min(data((spikeFirstPeakTimes(r)-lengthSpike):(spikeFirstPeakTimes(r)+2*lengthSpike)));
+                  
+                  %Pernoume to prwto xrinika apo ta duo akrotata
                   I = min(Imax,Imin) - lengthSpike - 1;
                   spikeFirstPeakTimes(r) = spikeFirstPeakTimes(r) + I;  
               end
@@ -50,45 +47,13 @@ for i = 1:4
 
 end
 
-%{
-Plot twn pragmatikwn spikes
-figure(1)
-for g = 1:length(spikeTimes)
-plot((data(spikeTimes(g)-50:spikeTimes(g)+50)))
-hold on
-plot(51,data(spikeTimes(g)),'r*')
-name = ['Spike' num2str(g)];
-title(name);
-pause(0.1);
-%hold off
+%Plot twn spikes pou vrikame apo ton kanona
+for i = 1:4
+    figure(1)
+    for g = 1:length(savedData(i).spikeEst)
+    plot( savedData(i).spikeEst(:,g))
+    hold on 
+    plot(lengthSpike+1,savedData(i).spikeEst(lengthSpike+1,g),'r*')
+    title('Spikes ordered by the first Peak');
+    end
 end
-%}
-
-%{
-Plot twn spikes pou vrikame apo ton kanona
-figure(2)
-for g = 1:length(savedData(i).spikeFirstPeakTimes)
-d = 40;    
-plot((data(savedData(i).spikeFirstPeakTimes(g)-d+16:savedData(i).spikeFirstPeakTimes(g)+d+4)))
-hold on 
-plot(d-15,data(savedData(i).spikeFirstPeakTimes(g)),'r*')
-name = ['Spike' num2str(g)];
-title(name);
-pause(0.5);
-%hold off
-end
-%}
-
-%{
-Plot twn spikes pou vrikame apo ton kanona
-figure(3)
-for g = 1:length(savedData(i).spikeEst)
-plot( savedData(i).spikeEst(:,g))
-hold on 
-plot(lengthSpike+1,savedData(i).spikeEst(lengthSpike+1,g),'r*')
-name = ['Spike' num2str(g)];
-title(name);
-%pause(1);
-%hold off
-end
-%}

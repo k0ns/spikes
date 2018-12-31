@@ -20,6 +20,20 @@ xlabel('sigma')
 %}
 
 %{
+Plot twn pragmatikwn spikes
+figure(1)
+for g = 1:length(spikeTimes)
+plot((data(spikeTimes(g)-50:spikeTimes(g)+50)))
+hold on
+plot(51,data(spikeTimes(g)),'r*')
+name = ['Spike' num2str(g)];
+title(name);
+pause(0.1);
+%hold off
+end
+%}
+
+%{
 close all
 i = 1;
 name = ['Data/Data_Eval_E_' num2str(i)];
@@ -30,6 +44,8 @@ d = 30;
 plot((data(m-d:m+d+40)))
 hold on
 plot(d+1,data(m),'r*')
+pause(0.5)
+%hold off
 end
 %}
 
@@ -71,7 +87,8 @@ end
 
 
 
-%{Plot classes with spikeFirstPeakTimes to prwtoAkrotato
+%{
+Plot classes with spikeFirstPeakTimes to prwtoAkrotato
 i = 1;
 name = ['Data/Data_Eval_E_' num2str(i)];
 load(name)
@@ -79,7 +96,7 @@ for class = 1:3
     figure(10+class)
     T = savedData(i).spikeFirstPeakTimes(savedData(i).classEst == class) ;
     T2 = savedData(i).spikeTimesEst(savedData(i).classEst == class) ;
-    for j = 1:length(T)/5
+    for j = 1:length(T)
         m = T(j) ;
         d = 30;
         plot(data(m-d:m+d+40))
@@ -99,12 +116,16 @@ close all
 i = 1;
 name = ['Data/Data_Eval_E_' num2str(i)];
 load(name)
-for class = 1:3
+for class = 1:1
     figure(10+class)
     T = spikeTimes(spikeClass == class);
+    Ms = zeros(length(T)/10,1);
+    MiN = Ms;
     for i = 1:length(T)/10
         m = T(i) ;
         d = 60;
+        Ms(i)=mean(data(m-33:m+33));
+        MiN(i) = min(data(m-33:m+33));
         plot((data(m-d:m+d+40)))
         hold on
         re = 0;
@@ -120,13 +141,13 @@ end
 Plot twn spikes pou vrikame apo ton kanona
 figure(4)
 i = 1;
-for g = 1:length(savedData(i).spikeEst)/20
+for g = 1:length(savedData(i).spikeEst)
 plot( savedData(i).spikeEst(:,g))
 hold on 
 plot(2*lengthSpike+1,savedData(i).spikeEst(2*lengthSpike+1,g),'r*')
 name = ['Spike' num2str(g)];
 title(name);
-%pause(1);
+pause(0.001);
 %hold off
 end
 %}

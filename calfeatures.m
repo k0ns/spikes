@@ -5,15 +5,21 @@ for i = 1:1
     %Feature1 = Platos prwtou akrotatou
     firstPeakPosition = 2*lengthSpike+1;
     feature1 = savedData(i).spikeEst(firstPeakPosition,:)';
-    
-    %Feature2 = Logos meta3u prwtou kai deuterou platous
+    %Feature2 = Logos meta3u prwtou kai deuterou mhkous
     feature2 = zeros(size(savedData(i).spikeEst,2),1);
+    %Feature3 = Sunoliko mhkos tou Spike
     feature3 = zeros(size(savedData(i).spikeEst,2),1);
+    %Feature4 = Sunoliko embado tou Spike
     feature4 = zeros(size(savedData(i).spikeEst,2),1);
+    %Feature5 = Embado tou deuterou misou tou Spike
     feature5 = zeros(size(savedData(i).spikeEst,2),1);
+    %Feature6 = Timh tou Spike sthn mesh tou mhkous tou
     feature6 = zeros(size(savedData(i).spikeEst,2),1);
+    %Feature7 = Timh tou Spike sthn mesh tou deyterou misou mhkous tou
     feature7 = zeros(size(savedData(i).spikeEst,2),1);
+    %Feature8 = 8esh tou deuterou akrotatou
     feature8 = zeros(size(savedData(i).spikeEst,2),1);
+    %Feature9 = 8esh ths megisths timhs tou spike
     feature9 = feature1;
     firstZeroVect = zeros(size(savedData(i).spikeEst,2),1);
     secondZeroVect = zeros(size(savedData(i).spikeEst,2),1);
@@ -67,14 +73,8 @@ for i = 1:1
     end
     
     savedData(i).features = [feature1 feature2 feature3 feature4 feature5 feature6 feature7 feature8 feature9]; 
-end
 
-%{P
-figure(1)
-color = savedData(i).classEst;
-gscatter(savedData(i).features(:,1), savedData(i).features(:,9),color,'kgrb','o*',5,'on');
-legend({'Noise', 'Class1','Class2', 'Class3'});
-%}
+end
 
   %{
 Plot twn spikes feature7
