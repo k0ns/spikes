@@ -37,7 +37,7 @@ for i = 1:8
     best_T(i) = k(bestKPosition(i))*std_n;
  	
     %Sxediash k vs Spikes
-    figure(figureNum+1)
+    handler = figure(figureNum+1);
     figureNum = figureNum+1;
  	plot(k,Nspikes)
     hold on 
@@ -48,7 +48,7 @@ for i = 1:8
     name_title = sprintf('KorufesVsK DataTest%d',i);
     title(name_title,'FontSize',15)
     loc = sprintf('plots/1.2/%s',name_title);
-    saveas(figureNum,loc,'png')
+    saveFigureFullSize(handler,loc);
     
 end
 

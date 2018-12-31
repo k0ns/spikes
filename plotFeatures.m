@@ -4,7 +4,8 @@ for x = 1:9
     q = q+1;
     for y = q:9
      if(x~=y)
-         figure(figureNum+1)
+         close all
+         handler = figure(figureNum+1);
          figureNum = figureNum+1;
             for i = 1:4
             titlesLabel= { 'Πλάτος πρώτου ακρότατου' ... 
@@ -21,15 +22,14 @@ for x = 1:9
             subplot(2,2,i)
             color = savedData(i).classEst;
             gscatter(savedData(i).features(:,x), savedData(i).features(:,y),color,'kgrb','o*',6,'on');
-            legend({'Noise', 'Class1','Class2', 'Class3'});
-            xlabel(titlesLabel(x),'FontSize',8);
-            ylabel(titlesLabel(y),'FontSize',8);
+            legend({'Noise', 'Class1','Class2', 'Class3'},'FontSize',9);
+            xlabel(titlesLabel(x),'FontSize',10);
+            ylabel(titlesLabel(y),'FontSize',10);
             title(['Ζεύγος Χαρακτηριστικών '  'Eval'  num2str(i)]);
             end
         name_title = sprintf('Features_x=%d_y=%d',x,y);
         loc = sprintf('plots/2.4/%s',name_title);
-        saveas(figureNum,loc,'png')
-        close all
+        saveFigureFullSize(handler,loc)
      end
     end
 end

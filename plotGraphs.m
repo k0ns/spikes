@@ -2,25 +2,25 @@
 %% -------- Erwthma 1.1 --------
 close all
 figureNum = 0;
-%{
+%
 mkdir('plots/1.1');
 for i = 1:8
 	name = ['Data/Data_Test_' num2str(i)];
 	load(name)
-    figure(figureNum+1)
+    handler = figure(figureNum+1);
     figureNum = figureNum+1;
     plot(data(1:10000))
     name_title = sprintf('DataTest%d',i);
     title(name_title,'FontSize',15)
     loc = sprintf('plots/1.1/%s',name_title);
-    saveas(figureNum,loc,'png')   
+    saveFigureFullSize(handler,loc) 
 end
 
 %% -------- Erwthma 1.2 --------
 mkdir('plots/1.2');
 findBestK;
 %Grafikh K vs Sigma
-figure(figureNum+1)
+handler = figure(figureNum+1);
 figureNum = figureNum+1;
 plot(sigma,bestKapa)
 ylabel('K')
@@ -28,11 +28,11 @@ xlabel('sigma')
 title('Συντελεστής Κ συναρτήσει της διακύμανσης του θορύβου','FontSize',15)
 name_title = sprintf('K_Vs_Sigma');
 loc = sprintf('plots/1.2/%s',name_title);
-saveas(figureNum,loc,'png')   
+saveFigureFullSize(handler,loc)  
 %
 %% -------- Erwthma 1.3 --------
 mkdir('plots/1.3');
-figure(figureNum+1)
+handler = figure(figureNum+1);
 figureNum = figureNum+1;
 plot(sigma,bestKapa)
 hold on 
@@ -45,7 +45,7 @@ xlabel('sigma')
 title('Ο κανόνας είναι πολυώνυμο 5ου βαθμού')
 name_title = sprintf('Kanonas');
 loc = sprintf('plots/1.3/%s',name_title);
-saveas(figureNum,loc,'png')   
+saveFigureFullSize(handler,loc);   
 
 %Epalh8evoume oti o kanonas doulevei swsta
 %Xrhsimopoioume ton kanona sta DataTest dedomana gia epalh8eush
@@ -56,7 +56,7 @@ figureNum = figureNum+1;
 Data = [Nspikes,givenNumSpikes,minE];
 colNames = {'Εντοπισμένες','Δοσμένες','Διαφορά'};
 rowNames = {'DataTest1','DataTest2','DataTest3','DataTest4','DataTest5','DataTest6','DataTest7','DataTest8'};
-uit = uitable(f,'RowName',rowNames,'ColumnName',colNames,'Data',Data,'Position',[10 220 330 180]);
+uitable(f,'RowName',rowNames,'ColumnName',colNames,'Data',Data,'Position',[10 220 330 180]);
 name_title = sprintf('NumOfSpikesByTheRule');
 loc = sprintf('plots/1.3/%s',name_title);
 saveas(figureNum,loc,'png')   
@@ -72,7 +72,7 @@ figureNum = figureNum+1;
 Data = [Nspikes,givenNumSpikes,ArxikhDiafora];
 colNames = {'Εντοπισμένες','Δοσμένες','Διαφορά'};
 rowNames = {'DataEval1','DataEval2','DataEval3','DataEval4'};
-uit = uitable(f,'RowName',rowNames,'ColumnName',colNames,'Data',Data,'Position',[10 220 330 100]);
+uitable(f,'RowName',rowNames,'ColumnName',colNames,'Data',Data,'Position',[10 220 330 100]);
 name_title = sprintf('NumOfSpikesByTheRule');
 loc = sprintf('plots/2.1/%s',name_title);
 saveas(figureNum,loc,'png')   
@@ -81,7 +81,7 @@ saveas(figureNum,loc,'png')
 mkdir('plots/2.2');
 %Plot twn spikes pou vrikame apo ton kanona
 for i = 1:4
-    figure(figureNum+1);
+    handler = figure(figureNum+1);
     figureNum = figureNum+1;
     for g = 1:length(savedData(i).spikeEst)
     plot( savedData(i).spikeEst(:,g))
@@ -90,7 +90,7 @@ for i = 1:4
     title('Spikes ordered by the first Peak');
     name_title = sprintf('SpikesByFirstPeak');
     loc = sprintf('plots/2.2/%s',name_title);
-    saveas(figureNum,loc,'png')   
+    saveFigureFullSize(handler,loc)   
     end
 end
 
@@ -117,11 +117,11 @@ saveas(figureNum,loc,'png')
 mkdir('plots/2.4')
 calfeatures;
 plotFeatures;
-
+%
 %% -------- Erwthma 2.5 --------
 mkdir('plots/2.5')
 rateClassification;
-
+bestCombinations =  OrderedRate(1:5,:);
 
 
 

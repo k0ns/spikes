@@ -21,4 +21,3 @@ end
 
 [~,Index]=sort(XYRate(:,3),'descend');
 OrderedRate = XYRate(Index,:);
-best5Combinations =  OrderedRate(1:5,:);
