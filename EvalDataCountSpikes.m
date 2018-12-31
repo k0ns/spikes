@@ -1,5 +1,7 @@
 close all
 ArxikhDiafora = zeros(4,1);
+Nspikes = zeros(4,1);
+givenNumSpikes = zeros(4,1);
 for i = 1:4
 %-----Erwthma 2.1-----
     name = ['Data/Data_Eval_E_' num2str(i)];
@@ -11,9 +13,10 @@ for i = 1:4
     bestK = 2.973 + 26.08*x + -332.6*x.^2 + 1556*x.^3 + -3289*x.^4 + 2624*x.^5;
     T = bestK*std_n;
     %Ari8mos twn Spikes
-    Nspikes = nnz(diff(data>T) == 1);   
+    Nspikes(i) = nnz(diff(data>T) == 1);   
     %Diafora apo ton pragmatiko ari8mo twn spikes
-	ArxikhDiafora(i) = Nspikes-length(spikeTimes);
+    givenNumSpikes(i) = length(spikeTimes);
+	ArxikhDiafora(i) = Nspikes(i)-givenNumSpikes(i);
     %8a vroume tis xronikes 8eseis/stigmes twn spikes,stis opoies mia exmh pernaei
     %to katwfli 'T'
     spikeTimesEst = sequenceOfNum( diff(data>T) == 1) + 1;
@@ -47,13 +50,3 @@ for i = 1:4
 
 end
 
-%Plot twn spikes pou vrikame apo ton kanona
-for i = 1:4
-    figure(1)
-    for g = 1:length(savedData(i).spikeEst)
-    plot( savedData(i).spikeEst(:,g))
-    hold on 
-    plot(lengthSpike+1,savedData(i).spikeEst(lengthSpike+1,g),'r*')
-    title('Spikes ordered by the first Peak');
-    end
-end

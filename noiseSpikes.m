@@ -42,7 +42,7 @@ for i = 1:4
     %}
     
     %{
- %Pragmatika Spikes
+    %Pragmatika Spikes
     figure(2)
     for g = 1:length(RealSpikesTimes)
     plot( (data(RealSpikesTimes(g)-32:RealSpikesTimes(g)+32)))
@@ -55,18 +55,3 @@ for i = 1:4
     end
     %}    
 end
-
-%Arxikh Diafora apotelesmatwn
-ArxikhDiafora
-%Meta thn eka8arhsh twn noise point
-TelikhDiafora = numOfrealSpikes - numOfGivenSpikes
-
-%Pososto epituxia arxika
-successBegin = 100 - (abs(ArxikhDiafora)./numOfGivenSpikes).*100
-
-%Pososto epituxias telika
-successEnd = 100 - (abs(TelikhDiafora)./numOfGivenSpikes).*100
-
-%Pososto 8oruvou sta deigmata
-Noise = ((numOfNoiseSpikes)./(numOfrealSpikes+numOfNoiseSpikes)).*100
-

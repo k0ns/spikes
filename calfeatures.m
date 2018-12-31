@@ -1,7 +1,7 @@
 %% Xarakthristika
 %------Erwthma 2.4 ------
 close all
-for i = 1:1
+for i = 1:4
     %Feature1 = Platos prwtou akrotatou
     firstPeakPosition = 2*lengthSpike+1;
     feature1 = savedData(i).spikeEst(firstPeakPosition,:)';
